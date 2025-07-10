@@ -1,8 +1,9 @@
 package com.next.app.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.next.app.entity.User;
-import com.next.app.service.UserService;
+import com.next.app.api.user.controller.UserController;
+import com.next.app.api.user.entity.User;
+import com.next.app.api.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
-package com.next.app.service;
+package com.next.app.api.user.service;
 
-import com.next.app.entity.User;
-import com.next.app.repository.UserRepository;
+import com.next.app.api.user.entity.User;
+import com.next.app.api.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

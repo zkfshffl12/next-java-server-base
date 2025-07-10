@@ -1,6 +1,6 @@
-package com.next.app.repository;
+package com.next.app.api.user.repository;
 
-import com.next.app.entity.User;
+import com.next.app.api.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
