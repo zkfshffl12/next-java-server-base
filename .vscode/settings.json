@@ -1,0 +1,8 @@
+{
+    "java.project.sourcePaths": [
+        "main/java/com/next/app",
+        "src/main/java/com/next/app"
+    ],
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.configuration.updateBuildConfiguration": "automatic"
+}
