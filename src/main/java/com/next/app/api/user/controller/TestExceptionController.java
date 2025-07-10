@@ -1,4 +1,4 @@
-package com.next.app.controller;
+package api.user.controller;
 
 import com.next.app.exception.ErrorCode;
 import com.next.app.exception.UserException;
