@@ -5,9 +5,9 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copy the Gradle build output (JAR file) into the container
-COPY build/libs/*.jar app.jar
+COPY build/libs/next-java-server-base-0.0.1-SNAPSHOT.jar app.jar
 
-# Expose the port your application runs on
+
 EXPOSE 8080
 
 # Run the application
