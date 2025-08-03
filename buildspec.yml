@@ -2,13 +2,11 @@ version: 0.2
 
 env:
   variables:
-    REPOSITORY_URI: 077672914621.dkr.ecr.ap-northeast-2.amazonaws.com/jaden-task
+    REPOSITORY_URI: 077672914621.dkr.ecr.ap-northeast-2.amazonaws.com
 
 phases:
   pre_build:
     commands:
-      - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
-      - FULL_IMAGE_URI=$REPOSITORY_URI:$IMAGE_TAG
       - ./gradlew clean bootJar
       - ls -l build/libs
       - echo Logging in to Amazon ECR...
@@ -16,12 +14,12 @@ phases:
 
   build:
     commands:
-      - docker build -t $FULL_IMAGE_URI .
+      - docker build -t 077672914621.dkr.ecr.ap-northeast-2.amazonaws.com/jaden:latest .
 
   post_build:
     commands:
-      - docker push $FULL_IMAGE_URI
-      - printf '[{"name":"jaden-service","imageUri":"%s"}]' $FULL_IMAGE_URI > imagedefinitions.json
+      - docker push 077672914621.dkr.ecr.ap-northeast-2.amazonaws.com/jaden:latest
+      - printf '[{"name":"jaden-service","imageUri":"%s"}]' 077672914621.dkr.ecr.ap-northeast-2.amazonaws.com/jaden:latest > imagedefinitions.json
 
 artifacts:
   files:
