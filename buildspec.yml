@@ -12,7 +12,7 @@ phases:
       - ./gradlew clean build
       - ls build/libs
       - echo Logging in to Amazon ECR...
-      - aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin $REPOSITORY_URI
+      - aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 077672914621.dkr.ecr.ap-northeast-2.amazonaws.com
   build:
     commands:
       - docker build -t IMAGE_NAME .
