@@ -10,12 +10,14 @@ phases:
       - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - FULL_IMAGE_URI=$REPOSITORY_URI:$IMAGE_TAG
       - ./gradlew clean bootJar
-      - ls build/libs
+      - ls -l build/libs
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin $REPOSITORY_URI
+
   build:
     commands:
       - docker build -t $FULL_IMAGE_URI .
+
   post_build:
     commands:
       - docker push $FULL_IMAGE_URI
@@ -24,4 +26,3 @@ phases:
 artifacts:
   files:
     - imagedefinitions.json
-
