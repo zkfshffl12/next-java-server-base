@@ -2,7 +2,7 @@ version: 0.2
 
 env:
   variables:
-    REPOSITORY_URI: 077672914621.dkr.ecr.ap-northeast-2.amazonaws.com/jaden
+    REPOSITORY_URI: 077672914621.dkr.ecr.ap-northeast-2.amazonaws.com
 
 phases:
   pre_build:
