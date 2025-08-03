@@ -2,30 +2,28 @@ version: 0.2
 
 env:
   variables:
-    AWS_REGION: ap-northeast-2
+    REPOSITORY_URI: 077672914621.dkr.ecr.ap-northeast-2.amazonaws.com/jaden
 
 phases:
   pre_build:
     commands:
-      - echo Logging in to Amazon ECR...
-      - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin 077672914621.dkr.ecr.$AWS_REGION.amazonaws.com
       - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
-      - echo "Cleaning and building the project"
-      - ./gradlew clean build
+      - FULL_IMAGE_URI=$REPOSITORY_URI:$IMAGE_TAG
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin $REPOSITORY_URI
 
   build:
     commands:
-      - echo Build started on `date`
-      - echo Building the Docker image...
-      - docker build -t jaden-task:$IMAGE_TAG .
-      - docker tag jaden-server:$IMAGE_TAG 077672914621.dkr.ecr.$AWS_REGION.amazonaws.com/jaden-task:$IMAGE_TAG
+      - echo Building application...
+      - ./gradlew clean build
+      - docker build -t $FULL_IMAGE_URI .
 
   post_build:
     commands:
-      - echo Pushing the Docker image...
-      - docker push 077672914621.dkr.ecr.$AWS_REGION.amazonaws.com/jaden-task:$IMAGE_TAG
-      - echo Writing image definitions file...
-      - printf '[{"name":"jaden-task","imageUri":"%s"}]' 077672914621.dkr.ecr.$AWS_REGION.amazonaws.com/jaden-task:$IMAGE_TAG > imagedefinitions.json
+      - echo Pushing image to ECR...
+      - docker push $FULL_IMAGE_URI
+      - echo Writing imagedefinitions.json for ECS deployment...
+      - printf '[{"name":"jaden-service","imageUri":"%s"}]' $FULL_IMAGE_URI > imagedefinitions.json
 
 artifacts:
   files:
