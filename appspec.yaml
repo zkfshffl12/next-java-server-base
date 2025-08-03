@@ -1,0 +1,9 @@
+version: 0.0
+Resources:
+  - TargetService:
+      Type: AWS::ECS::Service
+      Properties:
+        TaskDefinition: "<latest>"  # CodePipeline이 자동으로 대체
+        LoadBalancerInfo:
+          ContainerName: "jaden-server"
+          ContainerPort: 8080

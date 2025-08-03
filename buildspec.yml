@@ -1,0 +1,30 @@
+version: 0.2
+
+env:
+  variables:
+    AWS_REGION: ap-northeast-2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin 077672914621.dkr.ecr.$AWS_REGION.amazonaws.com
+      - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - docker build -t jaden-server:$IMAGE_TAG .
+      - docker tag jaden-server:$IMAGE_TAG 077672914621.dkr.ecr.$AWS_REGION.amazonaws.com/jaden-server:$IMAGE_TAG
+
+  post_build:
+    commands:
+      - echo Pushing the Docker image...
+      - docker push 077672914621.dkr.ecr.$AWS_REGION.amazonaws.com/jaden-server:$IMAGE_TAG
+      - echo Writing image definitions file...
+      - printf '[{"name":"jaden-server","imageUri":"%s"}]' 077672914621.dkr.ecr.$AWS_REGION.amazonaws.com/jaden-server:$IMAGE_TAG > imagedefinitions.json
+
+artifacts:
+  files:
+    - imagedefinitions.json
