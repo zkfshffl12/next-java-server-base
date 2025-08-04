@@ -52,4 +52,4 @@ jobs:
           SERVICE_NAME: tamibang-service
           AWS_REGION: ap-northeast-2
         run: |
-          aws ecs update-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --force-new-deployment --region $AWS_REGION
+          aws ecs update-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --force-new-deployment --region $AWS_REGION --debug
