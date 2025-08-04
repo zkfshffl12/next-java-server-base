@@ -19,16 +19,16 @@ phases:
   build:
     commands:
       - echo "Docker 이미지 빌드"
-      - docker buildx build --platform linux/arm64 -t ${IMAGE_NAME}:${IMAGE_TAG} --push .
+      - docker build -t $IMAGE_NAME .
       - docker tag $IMAGE_NAME:latest $IMAGE_URI
 
 
   post_build:
     commands:
-      - echo "Docker 이미지 푸시"
-      - docker push $IMAGE_URI
-      - echo "imagedefinitions.json 생성"
-      - printf '[{"name":"tamibang-ecr","imageUri":"%s"}]' $IMAGE_URI > imagedefinitions.json
+      - echo Building Docker image with buildx...
+        - IMAGE_URI=077672914621.dkr.ecr.ap-northeast-2.amazonaws.com/tamibang:latest
+        - docker buildx create --use
+        - docker buildx build --platform linux/arm64 -t $IMAGE_URI --push .
 
 artifacts:
   files:
