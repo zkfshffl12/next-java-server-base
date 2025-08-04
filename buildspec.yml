@@ -3,25 +3,36 @@ version: 0.2
 env:
   variables:
     REPOSITORY_URI: 077672914621.dkr.ecr.ap-northeast-2.amazonaws.com
-    IMAGE_URI: 077672914621.dkr.ecr.ap-northeast-2.amazonaws.com/jaden:latest
     IMAGE_NAME: jaden
+    IMAGE_TAG: latest
+    IMAGE_URI: 077672914621.dkr.ecr.ap-northeast-2.amazonaws.com/jaden:latest
 
 phases:
   pre_build:
     commands:
+      - echo "🔧 Gradle build 시작"
       - ./gradlew clean build
       - ls build/libs
-      - echo Logging in to Amazon ECR...
+      - echo "ECR 로그인 중..."
       - aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin $REPOSITORY_URI
+
   build:
     commands:
+      - echo "Docker 이미지 빌드"
       - docker build -t $IMAGE_NAME .
+      - docker tag $IMAGE_NAME $IMAGE_URI
+
   post_build:
     commands:
+      - echo "Docker 이미지 푸시"
       - docker push $IMAGE_URI
+      - echo "📝 imagedefinitions.json 생성"
       - printf '[{"name":"jaden-service","imageUri":"%s"}]' $IMAGE_URI > imagedefinitions.json
 
 artifacts:
   files:
     - imagedefinitions.json
 
+cache:
+  paths:
+    - '/root/.gradle/**/*'
