@@ -35,7 +35,7 @@ jobs:
 
       - name: Build and Push Docker image to ECR
         env:
-          ECR_REPOSITORY: next-java-server-tami
+          ECR_REPOSITORY: tamibang
           AWS_REGION: ap-northeast-2
         run: |
           IMAGE_TAG=latest
