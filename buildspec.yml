@@ -3,9 +3,7 @@ version: 0.2
 env:
   variables:
     REPOSITORY_URI: 077672914621.dkr.ecr.ap-northeast-2.amazonaws.com
-    IMAGE_NAME: tamibang
-    IMAGE_TAG: latest
-    IMAGE_URI: 077672914621.dkr.ecr.ap-northeast-2.amazonaws.com/tamibang:latest
+
 
 phases:
   pre_build:
@@ -18,15 +16,14 @@ phases:
 
   build:
     commands:
-      - echo "Docker 이미지 ARM64 빌드 및 푸시"
-      - docker buildx build --platform linux/arm64 -t $IMAGE_URI --push .
+
 
   post_build:
     commands:
       - echo "Docker 이미지 푸시"
       - docker push $IMAGE_URI
       - echo "imagedefinitions.json 생성"
-      - printf '[{"name":"tamibang-service","imageUri":"%s"}]' $IMAGE_URI > imagedefinitions.json
+
 
 artifacts:
   files:
@@ -34,4 +31,4 @@ artifacts:
 
 cache:
   paths:
-    - '/root/.gradle/**/*'
+
