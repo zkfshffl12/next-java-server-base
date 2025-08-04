@@ -1,6 +1,5 @@
 package com.next.app.api.user.service;
 
-import ch.qos.logback.classic.Logger;
 import com.next.app.api.user.entity.User;
 import com.next.app.api.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +30,6 @@ public class UserService {
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new RuntimeException("이미 존재하는 이메일입니다: " + user.getEmail());
         }
-
         return userRepository.save(user);
     }
     
