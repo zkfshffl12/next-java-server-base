@@ -10,7 +10,7 @@ env:
 phases:
   pre_build:
     commands:
-      - echo "🔧 Gradle build 시작"
+      - echo "Gradle build 시작"
       - ./gradlew clean build
       - ls build/libs
       - echo "ECR 로그인 중..."
@@ -20,13 +20,13 @@ phases:
     commands:
       - echo "Docker 이미지 빌드"
       - docker build -t $IMAGE_NAME .
-      - docker tag $IMAGE_NAME $IMAGE_URI
+      - docker tag $IMAGE_URI $REPOSITORY_URI/$IMAGE_URI
 
   post_build:
     commands:
       - echo "Docker 이미지 푸시"
       - docker push $IMAGE_URI
-      - echo "📝 imagedefinitions.json 생성"
+      - echo "imagedefinitions.json 생성"
       - printf '[{"name":"jaden-service","imageUri":"%s"}]' $IMAGE_URI > imagedefinitions.json
 
 artifacts:
