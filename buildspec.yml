@@ -20,6 +20,7 @@ phases:
     commands:
       - echo "Docker 이미지 빌드"
       - docker build -t $IMAGE_NAME .
+ 3647809 ((feat) codepipeline apply)
 
   post_build:
     commands:
