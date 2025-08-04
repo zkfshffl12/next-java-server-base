@@ -3,9 +3,9 @@ version: 0.2
 env:
   variables:
     REPOSITORY_URI: 077672914621.dkr.ecr.ap-northeast-2.amazonaws.com
-    IMAGE_NAME: jaden
+    IMAGE_NAME: wayne
     IMAGE_TAG: latest
-    IMAGE_URI: 077672914621.dkr.ecr.ap-northeast-2.amazonaws.com/jaden:latest
+    IMAGE_URI: 077672914621.dkr.ecr.ap-northeast-2.amazonaws.com/wayne:latest
 
 phases:
   pre_build:
@@ -36,3 +36,4 @@ artifacts:
 cache:
   paths:
     - '/root/.gradle/**/*'
+
