@@ -18,10 +18,10 @@ phases:
 
   build:
     commands:
-      - echo "Docker 이미지 빌드"
-      - docker build -t $IMAGE_NAME .
-      - docker tag $IMAGE_NAME:latest $IMAGE_URI
-
+      - echo "Docker buildx로 ARM64 플랫폼 빌드"
+      - docker buildx create --use
+      - docker buildx build --platform linux/arm64 -t ${IMAGE_NAME}:${IMAGE_TAG} --push .
+      - docker tag ${REPOSITORY_URI}/${IMAGE_NAME}:${IMAGE_TAG} $IMAGE_URI
 
   post_build:
     commands:
