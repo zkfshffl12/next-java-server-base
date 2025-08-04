@@ -38,6 +38,8 @@ jobs:
           ECR_REPOSITORY: next-java-server-tami
           AWS_REGION: ap-northeast-2
         run: |
+          ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+          echo "AWS Account ID is $ACCOUNT_ID"
           IMAGE_TAG=latest
           ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
           ECR_URI=$ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY
