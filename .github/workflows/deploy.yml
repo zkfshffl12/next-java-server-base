@@ -1,0 +1,57 @@
+name: Deploy to Amazon ECS
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  AWS_REGION: ap-northeast-2
+  ECR_REPOSITORY: next-java-server-base
+  ECS_SERVICE: next-java-server-base-service-kb1yndlm
+  ECS_CLUSTER: next-second-cluster
+  ECS_TASK_DEFINITION: .aws/task-definition.json
+  CONTAINER_NAME: next-java-server-base-container
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::077672914621:role/github-actions-deploy-role
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build, tag, and push Docker image
+        run: |
+          IMAGE_URI=077672914621.dkr.ecr.ap-northeast-2.amazonaws.com/${{ env.ECR_REPOSITORY }}:latest
+          docker build -t $IMAGE_URI .
+          docker push $IMAGE_URI
+
+      - name: Fill in the new image ID in the task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ${{ env.ECS_TASK_DEFINITION }}
+          container-name: ${{ env.CONTAINER_NAME }}
+          image: 077672914621.dkr.ecr.ap-northeast-2.amazonaws.com/${{ env.ECR_REPOSITORY }}:latest
+
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
