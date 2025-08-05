@@ -4,6 +4,7 @@ FROM openjdk:17-jdk-slim
 # Set the working directory inside the container
 WORKDIR /app
 
+# Copy the built jar file
 COPY build/libs/*.jar app.jar
 
 # Expose the port your application runs on
