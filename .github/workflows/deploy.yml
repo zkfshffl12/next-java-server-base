@@ -61,7 +61,7 @@ jobs:
           CLUSTER_STATUS=$(aws ecs describe-clusters --clusters ${{ env.ECS_CLUSTER }} --region ${{ env.AWS_REGION }} --query 'clusters[0].status' --output text)
           if [ "$CLUSTER_STATUS" = "INACTIVE" ]; then
             echo "ECS cluster is INACTIVE. Activating cluster..."
-            aws ecs update-cluster --cluster ${{ env.ECS_CLUSTER }} --capacity-providers FARGATE --default-capacity-provider-strategy capacityProvider=FARGATE,weight=1 --region ${{ env.AWS_REGION }}
+            aws ecs update-cluster --cluster ${{ env.ECS_CLUSTER }} --capacity-providers FARGATE --default-capacity-provider-strategy "capacityProvider=FARGATE,weight=1" --region ${{ env.AWS_REGION }}
             echo "Waiting for cluster to be active..."
             aws ecs wait cluster-active --cluster ${{ env.ECS_CLUSTER }} --region ${{ env.AWS_REGION }}
           else
