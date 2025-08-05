@@ -65,14 +65,17 @@ jobs:
             if [ "$CLUSTER_STATUS" = "INACTIVE" ]; then
               echo "ECS cluster is INACTIVE. Creating new cluster..."
               aws ecs create-cluster --cluster-name ${{ env.ECS_CLUSTER }} --region ${{ env.AWS_REGION }}
+              echo "Waiting for cluster to be active..."
+              aws ecs wait cluster-active --cluster ${{ env.ECS_CLUSTER }} --region ${{ env.AWS_REGION }}
+            else
+              echo "ECS cluster is already ACTIVE. Skipping wait command."
             fi
           else
             echo "ECS cluster does not exist. Creating new cluster..."
             aws ecs create-cluster --cluster-name ${{ env.ECS_CLUSTER }} --region ${{ env.AWS_REGION }}
+            echo "Waiting for cluster to be active..."
+            aws ecs wait cluster-active --cluster ${{ env.ECS_CLUSTER }} --region ${{ env.AWS_REGION }}
           fi
-          
-          echo "Waiting for cluster to be active..."
-          aws ecs wait cluster-active --cluster ${{ env.ECS_CLUSTER }} --region ${{ env.AWS_REGION }}
 
       - name: Check and activate ECS service if inactive
         run: |
