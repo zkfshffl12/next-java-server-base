@@ -1,10 +1,5 @@
 package com.next.app.exception;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-@Getter
-@RequiredArgsConstructor
 public enum ErrorCode {
     
     // 공통 에러 (1000번대)
@@ -39,4 +34,17 @@ public enum ErrorCode {
     
     private final int code;
     private final String message;
+    
+    ErrorCode(int code, String message) {
+        this.code = code;
+        this.message = message;
+    }
+    
+    public int getCode() {
+        return code;
+    }
+    
+    public String getMessage() {
+        return message;
+    }
 } 
